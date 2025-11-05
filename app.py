@@ -6,8 +6,12 @@ import streamlit as st
 import joblib
 
 # ---------- Load Models ----------
-model = joblib.load("sentiment_model_balanced.pkl")
-tfidf = joblib.load("sentiment_vectorizer_balanced.pkl")
+try:
+    model = joblib.load("sentiment_model_balanced.pkl")
+    tfidf = joblib.load("sentiment_vectorizer_balanced.pkl")
+except FileNotFoundError as e:
+    st.error(f"Model files not found: {e}. Please ensure 'sentiment_model_balanced.pkl' and 'sentiment_vectorizer_balanced.pkl' are in the same directory as the app.")
+    st.stop()
 
 # ---------- Cricket-Aware Correction ----------
 def correct_sentiment(comment, model_pred):
